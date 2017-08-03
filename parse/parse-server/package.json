@@ -1,0 +1,11 @@
+{
+  "name": "appdevopsparse",
+  "version": "1.0.0",
+  "description": "parse-server for AppDevopsParse",
+  "scripts": {
+    "start": "parse-server config.json"
+  },
+  "dependencies": {
+    "parse-server": "^2.0.0"
+  }
+}

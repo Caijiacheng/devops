@@ -1,0 +1,7 @@
+{
+  "appId": "2NjRq2vT9iTScCj5Oa95ha1CygCnrcityNbaBYMm",
+  "masterKey": "0cuGH3wqLJipUgHMxGjpSjV96uEL8g54zl5kJmlA",
+  "appName": "AppDevopsParse",
+  "cloud": "./cloud/main",
+  "databaseURI": "mongodb://127.0.0.1:27017/parse"
+}
