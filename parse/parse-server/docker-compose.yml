@@ -1,0 +1,22 @@
+version: '3'
+
+volumes:
+  mongo_data_volumn:
+
+services:
+  mongo-dev:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data_volumn:/data/db
+    command: "--storageEngine wiredTiger"
+  mongo-express-dev:
+    image: mongo-express
+    depends_on:
+      - mongo-dev
+    ports:
+      - "5051:8081"
+    links:
+      - mongo-dev:mongo
+
