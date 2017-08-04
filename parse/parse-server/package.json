@@ -13,6 +13,7 @@
   },
   "scripts": {
     "start": "parse-server config.json",
-    "start-dev": "nodemon -L -w cloud/main.js -w config.json --exec parse-server config.json"
+    "start-dev": "nodemon -L -w cloud/main.js -w config.json --exec parse-server config.json",
+    "dashboard": "parse-dashboard --config parse-dashboard-config.json"
   }
 }
