@@ -1,0 +1,42 @@
+version: '3'
+
+volumes:
+  vol_mongo_deploy:
+
+services:
+  pserver:
+    image: devops/pserver
+    build:
+      context: .
+    environment:
+      PARSE_SERVER_APP_NAME: ${APP_NAME}
+      PARSE_SERVER_APPLICATION_ID: ${APP_ID}
+      PARSE_SERVER_MASTER_KEY: ${MASTER_KEY}
+      PARSE_SERVER_DATABASE_URI: ${DATABASE_URI}
+    ports:
+      - "1337:1337"
+    links:
+      - mongo      
+  dashboard:
+    image: devops/pserver-dashboard
+    build:
+      context: ./dashboard
+    environment:
+      PARSE_DASHBOARD_SERVER_URL: http://${DEPLOY_HOST}:1337/parse
+      PARSE_DASHBOARD_APP_NAME: ${APP_NAME}
+      PARSE_DASHBOARD_APP_ID: ${APP_ID}
+      PARSE_DASHBOARD_MASTER_KEY: ${MASTER_KEY}
+      PARSE_DASHBOARD_USER_ID: "user"
+      PARSE_DASHBOARD_USER_PASSWORD: "pass"
+    links:
+      - pserver
+    ports:
+      - "4040:4040"
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - vol_mongo_deploy:/data/db
+    command: "--storageEngine wiredTiger"
+
