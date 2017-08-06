@@ -25,7 +25,7 @@ public class GrpcHealthIndicator implements HealthIndicator{
         }catch (Throwable ex) {
             return Health.down().withDetail("can't reach Micro2", ex).build();
         }
-        return Health.up().withDetail("GRPC is OK", String.format("Micor1 => grpc://%s:%d", hostMicro1, portMicro1)).build();
+        return Health.up().withDetail("GRpc", String.format("Micor1 => grpc://%s:%d", hostMicro1, portMicro1)).build();
     }
 
     void checkRPC() throws InterruptedException, IOException {

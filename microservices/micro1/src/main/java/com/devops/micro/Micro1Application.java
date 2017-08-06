@@ -1,6 +1,5 @@
 package com.devops.micro;
 
-import io.grpc.examples.routeguide.RouteGuideServer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
