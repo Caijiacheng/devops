@@ -14,49 +14,51 @@
  * limitations under the License.
  */
 
-package io.grpc.examples.helloworld;
+package io.grpc.examples.header;
 
+import io.grpc.Channel;
+import io.grpc.ClientInterceptor;
+import io.grpc.ClientInterceptors;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
+import io.grpc.examples.helloworld.GreeterGrpc;
+import io.grpc.examples.helloworld.HelloReply;
+import io.grpc.examples.helloworld.HelloRequest;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A simple client that requests a greeting from the {@link HelloWorldServer}.
+ * A simple client that like {@link io.grpc.examples.helloworld.HelloWorldClient}.
+ * This client can help you create custom headers.
  */
-public class HelloWorldClient {
-  private static final Logger logger = Logger.getLogger(HelloWorldClient.class.getName());
+public class CustomHeaderClient {
+  private static final Logger logger = Logger.getLogger(CustomHeaderClient.class.getName());
 
-  private final ManagedChannel channel;
+  private final ManagedChannel originChannel;
   private final GreeterGrpc.GreeterBlockingStub blockingStub;
 
-  /** Construct client connecting to HelloWorld server at {@code host:port}. */
-  public HelloWorldClient(String host, int port) {
-    this(ManagedChannelBuilder.forAddress(host, port)
-        // Channels are secure by default (via SSL/TLS). For the example we disable TLS to avoid
-        // needing certificates.
+  /**
+   * A custom client.
+   */
+  private CustomHeaderClient(String host, int port) {
+    originChannel = ManagedChannelBuilder.forAddress(host, port)
         .usePlaintext(true)
-        .build());
-  }
-
-  /** Construct client for accessing RouteGuide server using the existing channel. */
-  HelloWorldClient(ManagedChannel channel) {
-    this.channel = channel;
+        .build();
+    ClientInterceptor interceptor = new HeaderClientInterceptor();
+    Channel channel = ClientInterceptors.intercept(originChannel, interceptor);
     blockingStub = GreeterGrpc.newBlockingStub(channel);
   }
 
-  public void shutdown() throws InterruptedException {
-    channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+  private void shutdown() throws InterruptedException {
+    originChannel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
   }
 
-  public void shutdownNow(){
-    channel.shutdownNow();
-  }
-
-  /** Say hello to server. */
-  public void greet(String name) {
+  /**
+   * A simple client method that like {@link io.grpc.examples.helloworld.HelloWorldClient}.
+   */
+  private void greet(String name) {
     logger.info("Will try to greet " + name + " ...");
     HelloRequest request = HelloRequest.newBuilder().setName(name).build();
     HelloReply response;
@@ -69,23 +71,11 @@ public class HelloWorldClient {
     logger.info("Greeting: " + response.getMessage());
   }
 
-
-  public String greetWithRply(String name) {
-    logger.info("Will try to greet " + name + " ...");
-    HelloRequest request = HelloRequest.newBuilder().setName(name).build();
-    HelloReply response;
-    response = blockingStub.sayHello(request);
-    logger.info("Greeting: " + response.getMessage());
-    return response.getMessage();
-  }
-
-
   /**
-   * Greet server. If provided, the first element of {@code args} is the name to use in the
-   * greeting.
+   * Main start the client from the command line.
    */
   public static void main(String[] args) throws Exception {
-    HelloWorldClient client = new HelloWorldClient("localhost", 50051);
+    CustomHeaderClient client = new CustomHeaderClient("localhost", 50051);
     try {
       /* Access a service running on the local machine on port 50051 */
       String user = "world";

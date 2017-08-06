@@ -51,10 +51,6 @@ public class HelloWorldClient {
     channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
   }
 
-  public void shutdownNow(){
-    channel.shutdownNow();
-  }
-
   /** Say hello to server. */
   public void greet(String name) {
     logger.info("Will try to greet " + name + " ...");
@@ -68,17 +64,6 @@ public class HelloWorldClient {
     }
     logger.info("Greeting: " + response.getMessage());
   }
-
-
-  public String greetWithRply(String name) {
-    logger.info("Will try to greet " + name + " ...");
-    HelloRequest request = HelloRequest.newBuilder().setName(name).build();
-    HelloReply response;
-    response = blockingStub.sayHello(request);
-    logger.info("Greeting: " + response.getMessage());
-    return response.getMessage();
-  }
-
 
   /**
    * Greet server. If provided, the first element of {@code args} is the name to use in the
