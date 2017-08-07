@@ -8,6 +8,8 @@
 
 1.3 GRPC: WebProxy -> Micro1 , WebProxy -> Micro2
 
+1.4 React: Browser -> Nginx(react-app) -> WebProxy
+
 # 2. [GRPC LoadBalance](https://github.com/grpc/grpc/blob/master/doc/load-balancing.md)
 
 
@@ -17,7 +19,10 @@
     $ make all
     $ cd deploy && docker-compose up -d
     
-    $ # test service ok
+    $ # browser http://localhost. and Click Button[Request Message]
+    $ open http://localhost
+
+    $ # test grpc service ok
     $ curl -i localhost:8080/health # webproxy
     $ curl -i localhost:18080/health # webproxy-1
     $ curl -i localhost:9090/health # micro1
@@ -26,7 +31,8 @@
     $ curl -i localhost:19091/health # micro2-1
 
     $ # test dns ok
-    $ docker exec -it deploy_webproxy_1 nslookup micro1.devops.com 
-    $ docker exec -it deploy_webproxy_1 nslookup micro2.devops.com     
+    $ docker exec -it deploy_webproxy_1 nslookup micro1.micro.devops.dk.cc
+    $ docker exec -it deploy_webproxy_1 nslookup micro2.micro.devops.dk.cc
+
 ```
 
