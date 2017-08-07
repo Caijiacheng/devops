@@ -10,10 +10,7 @@
 
 1.4 React: Browser -> Nginx(react-app) -> WebProxy
 
-# 2. [GRPC LoadBalance](https://github.com/grpc/grpc/blob/master/doc/load-balancing.md)
-
-
-# 3. How to test at localhost
+# 2. How to test at localhost
 ```shell
     
     $ make all
@@ -35,4 +32,10 @@
     $ docker exec -it deploy_webproxy_1 nslookup micro2.micro.devops.dk.cc
 
 ```
+
+# 3. ABOUT
+
+### 3.1 [GRPC LoadBalance](https://github.com/grpc/grpc/blob/master/doc/load-balancing.md)
+
+### 3.2 [creat-react-app](https://github.com/facebookincubator/create-react-app)
 
