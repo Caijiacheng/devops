@@ -1,0 +1,1 @@
+FROM devops/oraclejdk8
