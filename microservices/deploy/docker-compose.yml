@@ -1,7 +1,20 @@
 version: '3'
 services:
+
+  frontend:
+    image: $PREFIX/frontend
+    depends_on:
+      - webproxy
+      - webproxy-1
+    ports:
+      - "80:80"
+    networks:
+      micro:
+        aliases:
+          - frontend.micro.devops.dk.cc
+
   webproxy:
-    image: $REGISTRY/webproxy
+    image: $PREFIX/webproxy
     environment:
       GRPC_HOST_MICRO2: micro2
       GRPC_PORT_MICRO2: 8981
@@ -16,10 +29,10 @@ services:
     networks:
       micro:
         aliases:
-          - webproxy.devops.com
+          - webproxy.micro.devops.dk.cc
 
   webproxy-1:
-    image: $REGISTRY/webproxy
+    image: $PREFIX/webproxy
     environment:
       GRPC_HOST_MICRO2: micro2
       GRPC_PORT_MICRO2: 8981
@@ -34,11 +47,11 @@ services:
     networks:
       micro:
         aliases:
-          - webproxy.devops.com          
+          - webproxy-1.micro.devops.dk.cc
     
 
   micro1:
-    image: $REGISTRY/micro1
+    image: $PREFIX/micro1
     environment:
       SERVER_PORT: 9090
       GRPC_PORT: 8980
@@ -50,10 +63,10 @@ services:
     networks:
       micro:
         aliases:
-          - micro1.devops.com
+          - micro1.micro.devops.dk.cc
 
   micro1-1:
-    image: $REGISTRY/micro1
+    image: $PREFIX/micro1
     environment:
       SERVER_PORT: 9090
       GRPC_PORT: 8980
@@ -65,10 +78,10 @@ services:
     networks:
       micro:
         aliases:
-          - micro1.devops.com
+          - micro1.micro.devops.dk.cc
 
   micro2:
-    image: $REGISTRY/micro2
+    image: $PREFIX/micro2
     environment:
       SERVER_PORT: 9091
       GRPC_PORT: 8981
@@ -80,10 +93,10 @@ services:
     networks:
       micro:
         aliases:
-          - micro2.devops.com
+          - micro2.micro.devops.dk.cc
 
   micro2-1:
-    image: $REGISTRY/micro2
+    image: $PREFIX/micro2
     environment:
       SERVER_PORT: 9091
       GRPC_PORT: 8981
@@ -95,7 +108,6 @@ services:
     networks:
       micro:
         aliases:
-          - micro2.devops.com          
-
+          - micro2.micro.devops.dk.cc
 networks:
   micro:

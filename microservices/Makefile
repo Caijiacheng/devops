@@ -1,5 +1,5 @@
 
-all: exchange micro1 micro2 webproxy
+all: exchange micro1 micro2 webproxy reactapp
 
 
 REGISTRY=devops
@@ -42,9 +42,20 @@ webproxy: exchange images
 	@cd webproxy && mv target/webproxy-0.0.1-SNAPSHOT.jar target/app.jar && cp Dockerfile target
 	@cd webproxy/target && docker build -t $(REGISTRY_MICRO)/webproxy .
 
+.PHONY: reactapp
+reactapp: 
+	@echo "react build"
+	@cd react-app && REACT_APP_API_HEALTH=http://localhost/api/health yarn build
+	@rm -rf images/nginx/build 
+	@cp -r react-app/build images/nginx/
+	@cd images/nginx/ && docker build -t $(REGISTRY_MICRO)/frontend .
+
+
 clean:
 	@echo "clean"
 	@cd exchange/protoc && mvn clean
 	@cd micro1 && mvn clean
 	@cd micro2 && mvn clean
 	@cd webproxy && mvn clean
+	@rm -rf react-app/build 
+	@rm -rf images/nginx/build 
