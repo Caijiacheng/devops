@@ -1,0 +1,101 @@
+version: '3'
+services:
+  webproxy:
+    image: $REGISTRY/webproxy
+    environment:
+      GRPC_HOST_MICRO2: micro2
+      GRPC_PORT_MICRO2: 8981
+      GRPC_HOST_MICRO1: micro1
+      GRPC_PORT_MICRO1: 8980
+      JAVA_OPTS: "-server -Xms64m -Xmx256m"
+    depends_on:
+      - micro1
+      - micro2
+    ports:
+      - "8080:8080"
+    networks:
+      micro:
+        aliases:
+          - webproxy.devops.com
+
+  webproxy-1:
+    image: $REGISTRY/webproxy
+    environment:
+      GRPC_HOST_MICRO2: micro2
+      GRPC_PORT_MICRO2: 8981
+      GRPC_HOST_MICRO1: micro1
+      GRPC_PORT_MICRO1: 8980
+      JAVA_OPTS: "-server -Xms64m -Xmx256m"
+    depends_on:
+      - micro1
+      - micro2
+    ports:
+      - "18080:8080"
+    networks:
+      micro:
+        aliases:
+          - webproxy.devops.com          
+    
+
+  micro1:
+    image: $REGISTRY/micro1
+    environment:
+      SERVER_PORT: 9090
+      GRPC_PORT: 8980
+      GRPC_HOST_MICRO2: micro2
+      GRPC_PORT_MICRO2: 8981
+      JAVA_OPTS: "-server -Xms64m -Xmx256m"
+    ports:
+      - "9090:9090"
+    networks:
+      micro:
+        aliases:
+          - micro1.devops.com
+
+  micro1-1:
+    image: $REGISTRY/micro1
+    environment:
+      SERVER_PORT: 9090
+      GRPC_PORT: 8980
+      GRPC_HOST_MICRO2: micro2
+      GRPC_PORT_MICRO2: 8981
+      JAVA_OPTS: "-server -Xms64m -Xmx256m"
+    ports:
+      - "19090:9090"
+    networks:
+      micro:
+        aliases:
+          - micro1.devops.com
+
+  micro2:
+    image: $REGISTRY/micro2
+    environment:
+      SERVER_PORT: 9091
+      GRPC_PORT: 8981
+      GRPC_HOST_MICRO1: micro1
+      GRPC_PORT_MICRO1: 8980
+      JAVA_OPTS: "-server -Xms64m -Xmx256m"
+    ports:
+      - "9091:9091"
+    networks:
+      micro:
+        aliases:
+          - micro2.devops.com
+
+  micro2-1:
+    image: $REGISTRY/micro2
+    environment:
+      SERVER_PORT: 9091
+      GRPC_PORT: 8981
+      GRPC_HOST_MICRO1: micro1
+      GRPC_PORT_MICRO1: 8980
+      JAVA_OPTS: "-server -Xms64m -Xmx256m"
+    ports:
+      - "19091:9091"
+    networks:
+      micro:
+        aliases:
+          - micro2.devops.com          
+
+networks:
+  micro:
